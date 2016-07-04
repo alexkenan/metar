@@ -11,3 +11,5 @@ Currently scrapes METARs for:
 * Weather pheomena
 * Altimeter
 * Sky condition
+
+It dumps the raw METAR at the end so user can verify/crosscheck the decoding.
