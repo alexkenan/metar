@@ -1,9 +1,11 @@
+#!/usr/bin/env python2.7
 """
 Module accepts 3 or 4 letter input from user and attempts to fetch METAR info from flightaware.com
 """
 import re
 import sys
 import time
+from datetime import datetime as datet
 from bs4 import BeautifulSoup
 import requests
 
@@ -121,6 +123,7 @@ def get_metar(metar, airp):
     date, time_, winddirection, windspeed, vis, clouds, temp, \
     dewpoint, altim, precip, obsf, metar = parse_metar(metar)
 
+    '''
     if time.localtime().tm_isdst == 0:
         timevar = 5
     else:
@@ -129,7 +132,7 @@ def get_metar(metar, airp):
     if int(time_[:time_.index(':')]) - timevar < 0:
         local = str(int(time_[:time_.index(':')]) - timevar + 12) + time_[time_.index(':'):]
     else:
-        local = str(int(time_[:time_.index(':')]) - timevar) + time_[time_.index(':'):]
+        local = str(int(time_[:time_.index(':')]) - timevar) + time_[time_.index(':'):]'''
     if date[1] == '1':
         date += 'st'
     elif date[1] == '2':
@@ -201,11 +204,11 @@ def get_metar(metar, airp):
     else:
         obsfprint = ''
 
-    print '{} Information:\n{} Zulu ({} local) on the {} of the month\n' \
+    print '{} Information:\nCurrent as of {} Z (Current time {:%H:%M} Z) on the {} of the month\n' \
           'Wind:\n\t{} {}\nVisibility:\n\t{}\nAltimeter:\n\t{}\nClouds:\n\t{}\n' \
           '{}{}' \
           'Temperature:\n\t{} degrees C ({} degrees F)\nDewpoint:\n\t{} degrees C ({} degrees F)' \
-          '\nRaw METAR: {}'.format(airp, time_, local, date,
+          '\nRaw METAR: {}'.format(airp, time_, datet.utcnow(), date,  # "local" variable before date
                                    windprint,
                                    gust,
                                    vis,
