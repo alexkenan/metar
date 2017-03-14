@@ -11,5 +11,6 @@ Currently scrapes METARs for:
 * Weather pheomena
 * Altimeter
 * Sky condition
+* Calculates density altitude and displays it if it is > 500 feet than the elevation
 
 It dumps the raw METAR at the end so user can verify/crosscheck the decoding.
