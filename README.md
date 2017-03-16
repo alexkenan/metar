@@ -22,7 +22,7 @@ Two `Airports` are equal if the `name` and `time` are equal, regardless of the t
     >>> from METAR import Airport
     >>> kjfk = Airport('kjfk')
     >>> kjfk.metar
-    'KJFK 160351Z 29016G26KT 10SM FEW046 SCT250 M03/M11 A2988 RMK AO2 PK WND 29033/0324 SLP119 T10281106 $'
+    'KJFK 160051Z 29016G26KT 10SM FEW046 SCT250 M03/M11 A2988 RMK AO2 PK WND 29033/0324 SLP119 T10281106 $'
     >>> kjfk.altimeter
     '29.88'
     >>> kjfk.weather
