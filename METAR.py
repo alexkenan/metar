@@ -6,7 +6,6 @@ NOTE: NOT FOR FLIGHT PLANNING
 """
 import re
 import sys
-import time
 import datetime as datet
 from bs4 import BeautifulSoup
 import requests
@@ -34,7 +33,7 @@ class Airport(object):
         self.altimeter = 'None'
         self.weather = []
         self.obsfucation = []
-        self.refresh(identifier)
+        self.refresh()
 
     def find_elevation(self):
         url = 'https://www.airnav.com/airport/{}'.format(self.identifier)
@@ -49,10 +48,10 @@ class Airport(object):
             elevation_str = elevationfinder.search(response).group()
             self.elevation = elevation_str.replace(' ft', '')
 
-    def refresh(self, airport):
+    def refresh(self):
         """
         Refresh airport's METAR
-        :param airport: 3 or 4 letter airport identifier
+        # :param airport: 3 or 4 letter airport identifier
         :return: None
         """
 
@@ -73,7 +72,7 @@ class Airport(object):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1)\
                      AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95'}
-        url = "https://flightaware.com/resources/airport/{}/weather".format(airport)
+        url = "https://flightaware.com/resources/airport/{}/weather".format(self.identifier)
         response = requests.get(url, headers=headers).text
         if 'Unknown or Invalid Airport Code' not in response:
             soup = BeautifulSoup(response, "html.parser")
@@ -317,10 +316,13 @@ class Airport(object):
         else:
             dewpoint = '{} degrees C'.format(self.dewpoint)
 
-        if float(self.density_alt()) < (float(self.elevation) + 500.0):
+        try:
+            if float(self.density_alt()) < (float(self.elevation) + 500.0):
+                density = ''
+            else:
+                density = 'Density altitude = {} ft'.format(self.density_alt())
+        except ValueError:
             density = ''
-        else:
-            density = 'Density altitude = {} ft'.format(self.density_alt())
 
         toreturn = '''{} Information ({})
 Elevation = {} ft   {}
@@ -369,6 +371,14 @@ METAR: {}'''.format(self.name, self.identifier,
             return '%5.2f' % density_altitude
         except ValueError:
             return 'N/A'
+
+    def __eq__(self, other):
+        """
+        Two airports are equal if their names are the same and their times are the same
+        :param other: Airport type
+        :return: bool
+        """
+        return self.name == other.name and self.time == other.time
 
     __repr__ = __str__
 
