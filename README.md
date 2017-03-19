@@ -42,6 +42,7 @@ Two `Airports` are equal if the `name` and `time` are equal, regardless of the t
     >>> kjfk.clouds
     ['FEW046', 'SCT250']
     >>> print(kjfk)
+    ----------------
     John F Kennedy Intl Airport Information (KJFK)
     Elevation = 12.7 ft   
     METAR issued at 00:51 Z (current time 00:35 Z) on the 16th of the month
@@ -51,15 +52,17 @@ Two `Airports` are equal if the `name` and `time` are equal, regardless of the t
     Clouds: Few clouds at 4600 feet, Scattered clouds at 25000 feet
     Precipitation: None
     Obsfucation: None
-    Temperature: -3 degrees C
-    Dewpoint: -11 degrees C
+    Temperature: -3 degrees C (27 deg F)
+    Dewpoint: -11 degrees C (12 deg F)
     METAR: KJFK 160351Z 29016G26KT 10SM FEW046 SCT250 M03/M11 A2988 RMK AO2 PK WND 29033/0324 SLP119 T10281106 $
+    ----------------
     >>> egll = Airport('EGLL')
     >>> egll.altimeter
     '1026 QNH'
     >>> egll.visibility
     '40.0 km'
     >>> egll
+    ----------------
     London Heathrow Airport Information (EGLL)
     Elevation = N/A ft   
     METAR issued at 00:20 Z (current time 00:53 Z) on the 16th of the month
@@ -69,9 +72,10 @@ Two `Airports` are equal if the `name` and `time` are equal, regardless of the t
     Clouds: None
     Precipitation: None
     Obsfucation: Fog
-    Temperature: 6 degrees C
-    Dewpoint: 6 degrees C
+    Temperature: 6 degrees C (43 deg F)
+    Dewpoint: 6 degrees C (43 deg F)
     METAR: EGLL 160420Z 20005KT 4000 0800W R27R/P1500 FG NSC 06/06 Q1026
+    ----------------
     >>> lhr = Airport('LHR')
     >>> egll == lhr
     True
