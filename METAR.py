@@ -324,7 +324,9 @@ class Airport(object):
         except ValueError:
             density = ''
 
-        toreturn = '''{} Information ({})
+        toreturn = '-'*16
+
+        toreturn += '''\n{} Information ({})
 Elevation = {} ft   {}
 METAR issued at {} Z (current time {} Z) on the {} of the month
 Wind: {}
@@ -333,21 +335,21 @@ Altimeter: {}
 Clouds: {}
 Precipitation: {}
 Obsfucation: {}
-Temperature: {}
-Dewpoint: {}
-METAR: {}'''.format(self.name, self.identifier,
-                    self.elevation, density,
-                    self.time, utc, eenth,
-                    self.wind,
-                    self.visibility,
-                    self.altimeter,
-                    allclouds,
-                    allweather,
-                    obsfprint,
-                    temperature_,
-                    dewpoint,
-                    self.metar)
-
+Temperature: {} ({} deg F)
+Dewpoint: {} ({} deg F)
+METAR: {}\n'''.format(self.name, self.identifier,
+                      self.elevation, density,
+                      self.time, utc, eenth,
+                      self.wind,
+                      self.visibility,
+                      self.altimeter,
+                      allclouds,
+                      allweather,
+                      obsfprint,
+                      temperature_, c_to_f(self.temperature),
+                      dewpoint, c_to_f(self.dewpoint),
+                      self.metar)
+        toreturn += '-'*16
         return toreturn
 
     def report(self):
@@ -381,6 +383,20 @@ METAR: {}'''.format(self.name, self.identifier,
         return self.name == other.name and self.time == other.time
 
     __repr__ = __str__
+
+
+def c_to_f(temp: str):
+    """
+    Convert Celsius temperature to Fahrenheight
+    :param temp: Temperature (str)
+    :return: Temperature in F (float)
+    """
+    try:
+        celsius = float(temp)
+        return round((9/5)*celsius + 32)
+    except ValueError:
+        return 'N/A'
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
