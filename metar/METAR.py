@@ -3,6 +3,8 @@
 Module accepts 3 or 4 letter input from user and attempts to fetch METAR info from flightaware.com
 
 NOTE: NOT FOR FLIGHT PLANNING
+
+LAST UPDATED: 30 MAR 2019
 """
 import re
 import sys
@@ -76,9 +78,14 @@ class Airport(object):
         response = requests.get(url, headers=headers).text
         if 'Unknown or Invalid Airport Code' not in response:
             soup = BeautifulSoup(response, "html.parser")
-            placeholder = soup.find('tr', class_='smallrow1 hint ').attrs
-            raw_metar = placeholder['title']
-            metar = str(raw_metar)
+            try:
+                placeholder = soup.find('tr', class_='smallrow1 hint ')
+                raw_metar = placeholder['title']
+                metar = str(raw_metar)
+            except TypeError:
+                placeholder_text = response[response.find('<tr class="smallrow1 hint " style="background-color'):]
+                placeholder_text = placeholder_text[:placeholder_text.find('<td>')]
+                metar = placeholder_text[placeholder_text.find('title="'):].replace('title="', '').replace('">', '')
             mmetar = metar[4:].strip()
             try:
                 mmetar = re.sub(r'\dnm [A-Z][A-Z]', '', metar[:metar.index('RMK')])
